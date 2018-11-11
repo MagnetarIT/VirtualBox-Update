@@ -1,3 +1,5 @@
+#!/bin/sh
+
 function installdmg {
     set -x
     tempd=$(mktemp -d)
@@ -7,10 +9,10 @@ function installdmg {
     if [ -e "$volume"/*.app ]; then
       sudo cp -rf "$volume"/*.app /Applications
     elif [ -e "$volume"/*.pkg ]; then
-      package=$(ls -1 | grep *.pkg | head -1)
-      sudo installer -pkg "$volume"/"$package".pkg -target /
+      package=$(ls $volume | grep pkg | head -1)
+      sudo installer -pkg "$volume"/"$package" -target /
     fi
-    sudo hdiutil detach "$(echo "$listing" | cut -f 1)"
+    sudo hdiutil detach $volume
     rm -rf $tempd
     set +x
 }
